@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  padding:15px;
+}
+#myvideo {
+  margin-top: 10px;
+  border: 10px solid gold;
+}
+#mybar_container {
+  margin-top: 10px;
+
+}
+</style>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <h2>Progress Bar </h2>
+  <div class="progress" style="width:50%;" id="mybar_container">
+    <div class="progress-bar" role="progressbar" aria-valuenow="12" aria-valuemin="0" aria-valuemax="12" style="width:0%" id="mybar">
+
+    </div>
+  </div>
+<video width="320" height="240" id="myvideo" style="width:50%;" controls>
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+  Your browser does not support the video tag.
+</video>
+
+<script>
+const v = document.getElementById('myvideo');
+const pbar = document.getElementById('mybar');
+
+main_counter = 0;
+collecter_counter = 0;
+function myfun() { setTimeout(function(){
+  collecter_counter += 1;
+  console.log(collecter_counter);
+  myfun();
+  }, 1000);
+ }
+ 
+ 
+ 
+function progress_updater(main_counter,video_duration) {
+  const total_duration = Math.round(video_duration);
+  const progress_precentage = Math.round((main_counter / total_duration) * 100);
+  pbar.style.width = progress_precentage + "%";
+  pbar.innerText = progress_precentage + "%";
+  return progress_precentage;
+}
+
+var playTimer;
+
+function myPlay() {
+  playTimer = setTimeout(function(){
+  collecter_counter += 1;
+  console.log(collecter_counter);
+  myPlay();
+  }, 970);
+}
+
+function myPuase() {
+  clearTimeout(playTimer);
+  console.log('video pause at second : ' +     collecter_counter);
+  main_counter = collecter_counter;
+  progress_updater(main_counter,12);
+
+}
+
+
+function myEnd() {
+  console.log(collecter_counter);
+  if (collecter_counter == 12) {
+    // send this main counter to server and add to database ajax required
+    main_counter = collecter_counter;
+    console.log('total watched time == total video time: ' + main_counter + ' Seconds');
+    progress_updater(main_counter,12);
+  
+  } else if (collecter_counter > 12) {
+    // send this main counter to server and add to database ajax required
+    main_counter = collecter_counter;
+    console.log('total watched time > video time: ' + main_counter + 'Seconds');
+    progress_updater(main_counter,12);
+    
+  
+  } else if (collecter_counter > 3 && collecter_counter < 12) {
+    // send this main counter to server and add to database ajax required
+    main_counter = collecter_counter;
+    console.log('total watched time < video time: ' + main_counter + 'Seconds');
+    progress_updater(main_counter,12);
+  
+  } else {
+    // send this main counter to server and add to database ajax required
+    main_counter = collecter_counter;
+    console.log('abuser who when start the class room go to the last second' +  main_counter + ' Seconds');
+    progress_updater(main_counter,12);
+  }
+  
+}
+ v.addEventListener('play', myPlay);
+ v.addEventListener('pause', myPuase);
+ v.addEventListener('ended', myEnd);
+
+</script>
+</body>
+</html>
